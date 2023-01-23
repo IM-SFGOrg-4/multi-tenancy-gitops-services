@@ -116,7 +116,7 @@ rm delete-ibm-pem-cm-secret-nonprod.yaml
 
 echo "Creating ibm-pem.jks certificate"
 DOMAIN=$(oc get ingresscontroller -n openshift-ingress-operator   default -o jsonpath='{.status.domain}')
-keytool -genkey -keystore ibm-pem.jks -storepass ${SERVER_KEYSTORE_PASSWORD} -alias pem -dname "CN=*.${DOMAIN}" -keypass ${SERVER_KEYSTORE_PASSWORD} -sigalg SHA256withRSA -keyalg RSA
+/mnt/c/ibm_sdk80/bin/keytool.exe -genkey -keystore ibm-pem.jks -storepass ${SERVER_KEYSTORE_PASSWORD} -alias pem -dname "CN=*.${DOMAIN}" -keypass ${SERVER_KEYSTORE_PASSWORD} -sigalg SHA256withRSA -keyalg RSA
 
 oc create secret generic ibm-pem.jks --type=Opaque --from-file ibm-pem.jks --dry-run=client -o yaml > delete-ibm-pem-jks.yaml
 kubeseal -n ${NS} --controller-name=${SEALED_SECRET_CONTOLLER_NAME} --controller-namespace=${SEALED_SECRET_NAMESPACE} -o yaml < delete-ibm-pem-jks.yaml > ibm-pem-jks.yaml
